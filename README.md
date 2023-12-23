@@ -1,3 +1,29 @@
+#
+
+## front end pages
+
+### /logout
+revoke any tokens, clear cookies
+
+### /login 
+Contains a link to take user to the atlassian auth page
+
+### /login/oauth-redirect/+page.ts
+Atlassian auth should redirect here. It's a back end handler page that the user shouldn't see in the url.
+
+After we exchange the code for an access_token we should redirect them to:
+
+### /projects
+This should fetch all sites this user has access to, and all projects each of those sites contains. Each of which has a link to:
+
+### /jira/{siteId}/{projectKey}.svelte
+### /jira/{siteId}/{projectKey}.svelte
+
+
+
+
+# Origional MD below ==========================================================
+
 # SvelteKit Demo app
 
 The official demo app for SvelteKit, hosted on Vercel.
