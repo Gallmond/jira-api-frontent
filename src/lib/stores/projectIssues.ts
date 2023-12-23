@@ -4,6 +4,7 @@ const now = (): number => new Date().valueOf()
 
 const initialData: ProjectIssues = {
     'GC-1000': {
+        key: 'GC-1000',
         id: 'this-is-an-id-1',
         status: 'TO DO',
         summary: 'design cool dash',
@@ -11,6 +12,7 @@ const initialData: ProjectIssues = {
         updatedAt: now(),
     },
     'GC-2000': {
+        key: 'GC-2000',
         id: 'this-is-an-id-2',
         status: 'DONE',
         summary: 'get header image',
@@ -19,6 +21,7 @@ const initialData: ProjectIssues = {
         parent: 'GC-1000'
     },
     'GC-2001': {
+        key: 'GC-2001',
         id: 'this-is-an-id-3',
         status: 'TO DO',
         summary: 'get title text',

@@ -1,5 +1,6 @@
 <script lang="ts">
     import projectIssues from '$lib/stores/projectIssues.js';
+	import IssueBar from '../../../../components/IssueBar.svelte';
 	export let data
 
     const siteId = data.siteId
@@ -51,3 +52,9 @@
         subtasks: {data.subtasks.length}
     </div>
 {/each}
+<h1>components</h1>
+{#each Object.entries(topIssues) as [key, data]}
+    <IssueBar issue={data} />
+{/each}
+
+
