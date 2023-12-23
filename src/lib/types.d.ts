@@ -4,6 +4,7 @@ type ProjectIssues = {
         summary: string
         status: string
         subtasks: string[]
-        parent?: string
+        parent?: string,
+        updatedAt: number
     }
 }
