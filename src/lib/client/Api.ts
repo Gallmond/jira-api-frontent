@@ -16,6 +16,22 @@ const urls = {
     tokens: 'https://auth.atlassian.com/oauth/token',
 }
 
+class Tokens {
+    public readonly access_token: string
+    public readonly refresh_token: string
+    public readonly expires_in: number
+    public readonly valid_until: number
+
+    constructor(access_token: string, refresh_token: string, expires_in: string){
+        this.access_token = access_token
+        this.refresh_token = refresh_token
+        this.expires_in = parseInt(expires_in)
+        this.valid_until = Date.now() + this.expires_in
+    }
+
+    public isExpired = (): boolean => Date.now() > this.valid_until
+}
+
 const getAuthUrl = (state: string): string => {
     const params = new URLSearchParams({
         state,
@@ -31,5 +47,6 @@ const getAuthUrl = (state: string): string => {
 }
 
 export {
-    getAuthUrl
+    getAuthUrl,
+    Tokens
 }
