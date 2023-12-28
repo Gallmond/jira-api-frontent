@@ -4,7 +4,6 @@
     const updatedString = new Date(issue.updatedAt)
         .toUTCString()
     
-    //TODO this isn't working. Maybe because of the nested route thing?
     let barExpanded = true
     const expandBar = () => {
         console.log({barExpanded})
