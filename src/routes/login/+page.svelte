@@ -1,5 +1,15 @@
-<h1>This is the login page</h1>
+<script lang="ts">
+    import { getAuthUrl } from "$lib/client/Api";
+    import { goto } from "$app/navigation";
+
+    const authClick = () => {
+        const now = new Date().valueOf().toString()
+        window.localStorage.setItem('state', now)
+        goto(getAuthUrl(now))
+    }
+
+</script>
 <p>
-    It should direct the user to the Atlassian auth url where they give permission
+    Click here to authorise with Atlassian
 </p>
-<p>After permission has been granted redirect to a handler page</p>
+<button on:click={authClick}>Auth</button>
