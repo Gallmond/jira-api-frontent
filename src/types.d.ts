@@ -58,23 +58,37 @@ type IssueSearch = {
     startAt: number
     maxResults: number
     total: number
-    issues: {
-        expand: string
-        id: string
-        self: string
-        key: string
-        fields: {
-            issuetype: IssueType
-            parent: {
-                id: string
-                key: string
-                self: string
-                fields: {
-                    summary: string
-                    status: Status
-                    priority: Priority
-                    issuetype: IssueType
-                }
+    issues: IssueSearchResult[]
+}
+
+type IssueSearchResultSubTask = {
+    id: string
+    key: string
+    self: string
+    fields: {
+        summary: string
+        status: Status
+        priority: Priority
+        issuetype: IssueType
+    }
+}
+
+type IssueSearchResult = {
+    expand: string
+    id: string
+    self: string
+    key: string
+    fields: {
+        issuetype: IssueType
+        parent: {
+            id: string
+            key: string
+            self: string
+            fields: {
+                summary: string
+                status: Status
+                priority: Priority
+                issuetype: IssueType
             }
         }
         project: {
@@ -94,6 +108,7 @@ type IssueSearch = {
         }
         created: string
         priority: Priority
+        labels: string[]
         assignee: User
         updated: string
         status: Status
@@ -101,19 +116,10 @@ type IssueSearch = {
         description: AtlassianDoc
         summary: string
         creator: User
-        subtasks: {
-            id: string
-            key: string
-            self: string
-            fields: {
-                summary: string
-                status: Status
-                priority: Priority
-                issuetype: IssueType
-            }
-        }[]
+        subtasks: IssueSearchResultSubTask[]
         reporter: User
-    }[]
+    }
+
 }
 
 type ProjectSearch = {
@@ -158,4 +164,21 @@ type User = {
     groups: {size: number, items: any[]} //TODO what are these
     applicationRoles: {size: number, items: any[]} //TODO what are these
     expand: string
+}
+
+type AtlassianDoc = {
+    type: 'doc'
+    version: number
+    content: (ParaContent)[]
+}
+
+type ParaContent = {
+    type: 'paragraph'
+    content: {
+        type: string
+        text: string
+        marks?: {
+            type: 'strong'
+        }[]
+    }[]
 }

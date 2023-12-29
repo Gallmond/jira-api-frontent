@@ -1,7 +1,9 @@
 import { getAccessibleResources, getProjects } from '$lib/server/Api.js';
 
 /** @type {import('./$types').PageLoad} */
-export async function load({cookies}) {
+export async function load({cookies, locals}) {
+
+    console.debug('projects server.ts', {locals})
 
     const accessibleResources = await getAccessibleResources(cookies)
 

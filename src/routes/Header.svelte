@@ -1,17 +1,31 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
-	import logo from '$lib/images/svelte-logo.svg';
-	import github from '$lib/images/github.svg';
+	import { goto } from '$app/navigation';
 
-	const routes = {
+	let routes: Record<string, string> = {
 		home: '/',
 		about: '/about',
 		login: '/login',
-		projects: '/projects',
+		debug: '/debug',
+		projects: '/projects'
 	}
-
 </script>
 
+<header>
+	<div class='container'>
+		<span style="color: red;">❤</span>
+
+		<div class='links'>
+			{#each Object.entries(routes) as [name, url]}
+				<a class="link {$page.url.pathname === url ? 'current' : ''}" href="{url}">{name}</a>
+			{/each}
+		</div>
+
+		<button on:click={() => goto('/logout')}>Logout</button>
+	</div>
+</header>
+
+<!-- 
 <header>
 	<div class="corner">
 		<a href="https://kit.svelte.dev">
@@ -40,10 +54,28 @@
 			<img src={github} alt="GitHub" />
 		</a>
 	</div>
-</header>
+</header> -->
 
 <style>
-	header {
+
+	.links{
+		display: flex;
+		gap: 8px;
+	}
+
+	.current{
+		font-weight: bold;
+		font-size: 1.2em;
+		text-decoration: underline;
+	}
+
+	.container{
+		display: flex;
+		justify-content: space-between;
+		padding: 4px
+	}
+
+	/* header {
 		display: flex;
 		justify-content: space-between;
 	}
@@ -129,5 +161,5 @@
 
 	a:hover {
 		color: var(--color-theme-1);
-	}
+	} */
 </style>

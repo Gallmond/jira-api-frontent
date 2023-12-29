@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import userState from '$lib/stores/UserState.js';
 	import { onMount } from 'svelte';
 
     export let data
@@ -16,8 +15,6 @@
     const {
         loggedOut
     } = data
-
-    $userState.loggedIn = !loggedOut
 </script>
 
-<h1>You have {loggedOut ? 'DEFINITELY' : 'NOT'} logged out!</h1>
+<h1>You are logged out!</h1>

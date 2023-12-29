@@ -15,7 +15,21 @@ const timeBetween = (a: Date, b?: Date): string => {
     return `${mm}m ${ss}s`;
 }
 
+const jiraColor = (colorName: string): string => {
+    const colors: Record<string, string> = {
+        'blue-gray': '#0052CC',
+        'green': '#36B37E',
+        'yellow': '#FFAB00',
+    }
+
+    const hex = colors[colorName] ?? null
+
+    if(hex === null) throw new Error(`Unknown color name: ${colorName}`)
+    
+    return hex
+}
+
 
 export {
-    errorRedirect, timeBetween
+    errorRedirect, timeBetween, jiraColor
 }

@@ -1,40 +1,31 @@
 <script lang="ts">
+	import { timeBetween } from '$lib/utils/utils.js';
+
     export let data
 
     const {
-        access_token,
-        refresh_token,
-        expires_in,
-        valid_until,
+        tokens,
         headers,
     } = data
 
-    let dateString = ''
-
-    if(valid_until){
-        console.log({valid_until})
-
-        const now = new Date()
-        const validUntilDate = new Date(parseInt(valid_until))
-
-        const diffMilliseconds = Math.abs(now.valueOf() - validUntilDate.valueOf())
-        const diffMinutes = Math.floor((diffMilliseconds / 1000) / 60)
-        
-        const validUntilDateString = validUntilDate.toISOString()
-
-        dateString = `(${validUntilDateString} ie ${diffMinutes} minutes)`
+    let validUntilString = ''
+    let timeRemainingString = ''
+    if(tokens){
+        validUntilString = tokens.valid_until.toLocaleString()
+        timeRemainingString = timeBetween(tokens.valid_until)
     }
-    
 </script>
+
+{#if tokens}
+<h2>Tokens {validUntilString} ({timeRemainingString})</h2>
+
 <textarea>
-// cookiesTokens {dateString}
-{JSON.stringify({
-    access_token,
-    refresh_token,
-    expires_in,
-    valid_until,
-}, null, 2)}
-// headers
+    {JSON.stringify(tokens, null, 2)}
+</textarea>
+{/if}
+
+<h2>AuthHeaders</h2>
+<textarea>
 {JSON.stringify(headers, null, 2)}
 </textarea>
 

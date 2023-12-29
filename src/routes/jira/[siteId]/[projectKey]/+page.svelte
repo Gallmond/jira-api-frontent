@@ -1,60 +1,35 @@
 <script lang="ts">
-    import projectIssues from '$lib/stores/projectIssues.js';
 	import IssueBar from '../../../../components/IssueBar.svelte';
 	export let data
 
-    const siteId = data.siteId
-    const projectKey = data.projectKey
+    const {
+        parentIssues,
+    } = data
 
-    let pageIssues = $projectIssues
+    let sortedIssues = parentIssues.issues.sort((a, b) => new Date(a.fields.created) > new Date(b.fields.created) ? 1 : -1)
 
-    const getTopIssues = (issues: ProjectIssues): ProjectIssues => {
-        return Object.entries(issues).reduce((carry, [key, data]) => {
-            if(data.parent){
-                return carry
-            }
-
-            carry[key] = data
-            return carry
-        }, {} as ProjectIssues)
-    }
-
-    $: topIssues = getTopIssues($projectIssues)
+    console.log({parentIssues})
 </script>
 
+<h1>Issues</h1>
+<p>These are issues with no parent</p>
 <p>
-    This is the dynamic page that should list issues for this project. We have recieved:
+    TODO: Need to update the api call to account for 'linked' issues, not just child issues / subtasks
+    How to distinguish between an 'inbound' issue and an 'outbound' issue?
 </p>
-<ul>
-    <li>siteId: {siteId}</li>
-    <li>projectKey: {projectKey}</li>
-</ul>
-<p>
-    Note that if the projectkey gets encoded it will look like:
-</p>
-<h1>All issues</h1>
-{#each Object.entries(pageIssues) as [key, data]}
-    <div>
-        key: {key}
-        id: {data.id}
-        status: {data.status}
-        summary: {data.summary}
-        subtasks: {data.subtasks.length}
-    </div>
-{/each}
-<h1>Only issues with no parent (ie, top level)</h1>
-{#each Object.entries(topIssues) as [key, data]}
-    <div>
-        key: {key}
-        id: {data.id}
-        status: {data.status}
-        summary: {data.summary}
-        subtasks: {data.subtasks.length}
-    </div>
-{/each}
-<h1>components</h1>
-{#each Object.entries(topIssues) as [key, data]}
-    <IssueBar issue={data} />
-{/each}
 
+<div class="issues-holder">
+    {#each sortedIssues as issue}
+        <IssueBar issue={issue} />
+    {/each}
+</div>
+
+<style>
+    .issues-holder{
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        background-color: grey;
+    }
+</style>
 

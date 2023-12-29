@@ -73,11 +73,20 @@ class Tokens {
 }
 
 const getAuthUrl = (state: string): string => {
+    const scopes = [
+        'read:me',
+        'read:account',
+        'read:jira-work',
+        'read:jira-user',
+        'read:workflow:jira', // required to read statuses
+        'offline_access' // required for refresh tokens
+    ]
+
     const params = new URLSearchParams({
         state,
         audience: 'api.atlassian.com',
         client_id: PUBLIC_ATLASSIAN_CLIENT_ID,
-        scope: 'read:me read:account read:jira-work read:jira-user offline_access',
+        scope: scopes.join(' '),
         redirect_uri: PUBLIC_ATLASSIAN_AUTH_REDIRECT_URL,
         response_type: 'code',
         prompt: 'consent',

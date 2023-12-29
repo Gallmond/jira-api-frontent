@@ -134,6 +134,20 @@ const getAccessibleResources = async (cookies: Cookies): Promise<AccessibleResou
     return await res.json() as AccessibleResource[]
 }
 
+/**
+ * Return issues for this project who have no parent
+ */
+const getParentIssues = async(cookies: Cookies, resourceId: string, projectKey: string, startAt: number = 0, maxResults: number = 50): Promise<IssueSearch> => {
+    const uri = apiUrl(resourceId, '/search', {
+        startAt, maxResults,
+        jql: `project = ${projectKey} AND parent is EMPTY`
+    })
+
+    const res = await authGet(cookies, uri)
+
+    return await res.json() as IssueSearch
+}
+
 const getIssues = async (cookies: Cookies, resourceId: string, projectKey: string, startAt: number = 0, maxResults: number = 50): Promise<IssueSearch> => {
     const uri = apiUrl(resourceId, '/search', {
         startAt, maxResults,
@@ -174,5 +188,6 @@ export {
     getAccessibleResources,
     getProjects,
     getIssues,
+    getParentIssues,
     getUser,
 }
