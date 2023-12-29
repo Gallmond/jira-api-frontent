@@ -8,7 +8,8 @@ import { PUBLIC_ATLASSIAN_AUTH_REDIRECT_URL, PUBLIC_ATLASSIAN_CLIENT_ID } from "
 import { PRIVATE_ATLASSIAN_SECRET } from "$env/static/private"
 import { Tokens } from "$lib/client/Api"
 import { error, type Cookies } from "@sveltejs/kit"
-import type { throwIf } from "$lib/utils/utils"
+import { writeFile } from 'node:fs'
+import { get } from "svelte/store"
 
 class TokensExpiredError extends Error{}
 class TokensRequiredError extends Error{}
@@ -21,7 +22,35 @@ const urls = {
     revoke: 'https://auth.atlassian.com/oauth/token/revoke'
 }
 
+const apiUrl = (resourceId: string, path: string, bodyParams?: Record<string, any>): string => {
+    const qs = bodyParams
+        ? '?' + new URLSearchParams(bodyParams).toString()
+        : ''
+
+    const endpoint = path.startsWith('/')
+        ? path
+        : '/' + path
+
+    // https://api.atlassian.com/ex/jira/{cloudId}/rest/api/3/projects/search?foo=bar
+    return `${urls.api}/${resourceId}/rest/api/3${endpoint}${qs}`
+}
+
 const jsonHeaders = {accept: 'application/json', 'Content-Type': 'application/json'}
+
+
+const _writeStub = (title: string, data: string | Record<string, any>): void => {
+    const fileName = `./stubs/${title}.stub.json`
+
+    const fileData = typeof data === 'string'
+        ? data
+        : JSON.stringify(data, null, 2)
+
+    writeFile(fileName, fileData, (err) => {
+        if(err) console.error(err)
+
+        console.debug(`wrote file ${fileName}`)
+    })
+}
 
 const tokenRequest = async (bodyParams: Record<string, string>): Promise<Tokens> => {
     const res = await fetch(urls.tokens, {
@@ -87,9 +116,63 @@ const authHeaders = async (cookies: Cookies, allowRefresh = true) => {
     }
 }
 
+const authGet = async (cookies: Cookies, url: string, getParams?: Record<string, any>): Promise<Response> => {
+    const qs = getParams
+        ? '?' + new URLSearchParams(getParams).toString()
+        : ''
+
+    return await fetch(`${url}${qs}`, {
+        method: 'GET',
+        headers: await authHeaders(cookies)
+    })
+}
+
+const getAccessibleResources = async (cookies: Cookies): Promise<AccessibleResource[]> => {
+    console.log('getAccessibleResources')
+    const res = await authGet(cookies, urls.sites)
+
+    return await res.json() as AccessibleResource[]
+}
+
+const getIssues = async (cookies: Cookies, resourceId: string, projectKey: string, startAt: number = 0, maxResults: number = 50): Promise<IssueSearch> => {
+    const uri = apiUrl(resourceId, '/search', {
+        startAt, maxResults,
+        jql: `project=${projectKey}`
+    })
+
+    const res = await authGet(cookies, uri)
+
+    return await res.json() as IssueSearch
+}
+
+const getUser = async (cookies: Cookies, resourceId: string): Promise<User> => {
+    const res = await authGet(
+        cookies,
+        apiUrl(resourceId, '/myself')
+    )
+
+    return await res.json() as User
+}
+
+const getProjects = async (cookies: Cookies, resourceId: string, startAt: number = 0, maxResults: number = 50): Promise<ProjectSearch> => {
+    const uri = apiUrl(resourceId, '/project/search', {
+        startAt, maxResults,
+        expand: 'description,url,projectKeys'
+    })
+
+    const res = await authGet(cookies, uri)
+
+    return await res.json() as ProjectSearch
+}
+
+
 export {
     getTokens,
     revokeToken,
     refreshTokens,
     authHeaders,
+    getAccessibleResources,
+    getProjects,
+    getIssues,
+    getUser,
 }

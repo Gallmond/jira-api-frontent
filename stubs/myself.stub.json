@@ -1,0 +1,25 @@
+{
+  "self": "https://api.atlassian.com/ex/jira/2c4db73f-3b84-45f0-8227-5ea9e43b6db9/rest/api/3/user?accountId=611a2b1a650a26006e1a33ce",
+  "accountId": "611a2b1a650a26006e1a33ce",
+  "accountType": "atlassian",
+  "emailAddress": "gallmond@gmail.com",
+  "avatarUrls": {
+    "48x48": "https://secure.gravatar.com/avatar/4897e73ee56878f68a7d0b5902d2fe98?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FG-2.png",
+    "24x24": "https://secure.gravatar.com/avatar/4897e73ee56878f68a7d0b5902d2fe98?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FG-2.png",
+    "16x16": "https://secure.gravatar.com/avatar/4897e73ee56878f68a7d0b5902d2fe98?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FG-2.png",
+    "32x32": "https://secure.gravatar.com/avatar/4897e73ee56878f68a7d0b5902d2fe98?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FG-2.png"
+  },
+  "displayName": "ga",
+  "active": true,
+  "timeZone": "Europe/London",
+  "locale": "en_GB",
+  "groups": {
+    "size": 2,
+    "items": []
+  },
+  "applicationRoles": {
+    "size": 1,
+    "items": []
+  },
+  "expand": "groups,applicationRoles"
+}

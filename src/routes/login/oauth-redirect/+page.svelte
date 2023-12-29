@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import userState from '$lib/stores/UserState.js';
 
     export let data
 
-    const { state } = data
+    const { state, loggedIn } = data
+
+    $userState.loggedIn = loggedIn
 
     console.log({state})
 </script>

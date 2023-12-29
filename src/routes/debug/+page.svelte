@@ -9,16 +9,25 @@
         headers,
     } = data
 
-    const now = new Date()
-    const validUntilDate = new Date(parseInt(valid_until ?? '0'))
+    let dateString = ''
 
-    const diffMilliseconds = Math.abs(now.valueOf() - validUntilDate.valueOf())
-    const diffMinutes = Math.floor((diffMilliseconds / 1000) / 60)
+    if(valid_until){
+        console.log({valid_until})
+
+        const now = new Date()
+        const validUntilDate = new Date(parseInt(valid_until))
+
+        const diffMilliseconds = Math.abs(now.valueOf() - validUntilDate.valueOf())
+        const diffMinutes = Math.floor((diffMilliseconds / 1000) / 60)
+        
+        const validUntilDateString = validUntilDate.toISOString()
+
+        dateString = `(${validUntilDateString} ie ${diffMinutes} minutes)`
+    }
     
-    const validUntilDateString = validUntilDate.toISOString()
 </script>
 <textarea>
-// cookiesTokens ({validUntilDateString} ie {diffMinutes} minutes)
+// cookiesTokens {dateString}
 {JSON.stringify({
     access_token,
     refresh_token,

@@ -3,19 +3,21 @@
 
     export let data
 
-    let {projectUrls} = data
+    console.log({data})
 
-    const projectChanged = (e: Event) => {
-        const target = e.target as HTMLSelectElement
-
-        goto(target.value)
+    const projectLink = (siteId: string, projectKey: string) => {
+        goto(`/jira/${siteId}/${projectKey}`)
     }
+
 </script>
 
-<h1>This is the projects page</h1>
+<h1>Resources & Projects</h1>
 
-<select on:change={projectChanged}>
-    {#each projectUrls as projectUrl}
-    <option value="{projectUrl.url}">{projectUrl.name}</option>
-    {/each}
-</select>
+{#each data.resources as resource }
+    <h2>{resource.name} | <a href={resource.url}>link</a></h2>
+    <ul>
+        {#each resource.projects as project}
+        <li>{project.key} | {project.name} | {project.id} | <button on:click={() => projectLink(resource.id, project.key)}>open</button></li>            
+        {/each}
+    </ul>
+{/each}

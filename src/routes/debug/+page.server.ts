@@ -1,5 +1,5 @@
 import { Tokens } from '$lib/client/Api.js'
-import { authHeaders } from '$lib/server/Api.js'
+import { authHeaders, getUser } from '$lib/server/Api.js'
 import type { Cookies } from '@sveltejs/kit'
 
 export async function load({cookies}){

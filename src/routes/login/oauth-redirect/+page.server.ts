@@ -1,3 +1,4 @@
+import { Tokens } from '$lib/client/Api.js'
 import { getTokens } from '$lib/server/Api.js'
 
 export async function load({url, cookies}){
@@ -8,13 +9,9 @@ export async function load({url, cookies}){
 	// fails to compile as it thinks it continues on after it
 	let tokens = await getTokens(code as string)
 
-	const opts = {secure: true, httpOnly: true, path: '/'}
-	cookies.set('access_token', tokens.access_token, opts)
-	cookies.set('refresh_token', tokens.refresh_token, opts)
-	cookies.set('expires_in', tokens.expires_in.toString(), opts)
-	cookies.set('valid_until', tokens.valid_until.toString(), opts)
+	tokens.store(cookies)
 
     return {
-        state, code
+        state, code, loggedIn: !tokens.isExpired()
     }
 }
