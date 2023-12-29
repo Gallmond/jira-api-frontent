@@ -7,6 +7,7 @@
 		home: '/',
 		about: '/about',
 		login: '/login',
+		logout: '/logout',
 		projects: '/projects',
 	}
 
